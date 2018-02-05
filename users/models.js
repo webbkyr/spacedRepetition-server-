@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const bcrpyt = require('bcrpytjs');
+const bcrypt = require('bcryptjs');
 
 mongoose.Promise = global.Promise;
 
@@ -36,11 +36,11 @@ UserSchema.methods.apiRepr = function(){
 };
 
 UserSchema.methods.validatePassword = function(password) {
-  return bcrpyt.compare(password, this.password);
+  return bcrypt.compare(password, this.password);
 };
 
 UserSchema.statics.hashPassword = function(password) {
-  return bcrpyt.hashPassword(password, 10);
+  return bcrypt.hashPassword(password, 10);
 };
 // UserSchema.methods.getPerformanceData() = function() {
 //   return {
