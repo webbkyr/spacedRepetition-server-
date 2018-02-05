@@ -2,7 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const { User } = require('./model');
+const { User } = require('./models');
 const router = express.Router();
 const jsonParser = bodyParser.json();
 
@@ -93,3 +93,5 @@ router.post('/', jsonParser, (req, res) => {
       res.status(500).json({code: 500, message: 'Something went wrong'});
     });
 });
+
+module.exports = {router};

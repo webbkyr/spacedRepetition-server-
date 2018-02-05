@@ -14,11 +14,13 @@
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.15.4",
     "knex": "^0.13.0",
     "mongoose": "^4.11.12",
     "morgan": "^1.8.2",
+    "passport": "^0.4.0",
     "pg": "^7.3.0"
   },
   "devDependencies": {
