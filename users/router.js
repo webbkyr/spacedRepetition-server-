@@ -81,12 +81,13 @@ router.post('/', jsonParser, (req, res) => {
       return User.create({
         username,
         password: hash
-      })
-        .then(user => {
-          //send back a safe representation of the user (no passwords)
-          return res.status(201).location(`/api/users/${user.id}`).json(user.apiRepr());
-        });
-    }).catch(err => {
+      });
+    })
+    .then(user => {
+      //send back a safe representation of the user (no passwords)
+      return res.status(201).location(`/api/users/${user.id}`).json(user.apiRepr());
+    })
+    .catch(err => {
       if (err.reason === 'ValidationError') {
         return res.status(err.code).json(err);
       }

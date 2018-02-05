@@ -6,7 +6,6 @@ const bcrypt = require('bcryptjs');
 mongoose.Promise = global.Promise;
 
 const UserSchema = mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
   username: {
     type: String,
     required: true,
@@ -40,7 +39,7 @@ UserSchema.methods.validatePassword = function(password) {
 };
 
 UserSchema.statics.hashPassword = function(password) {
-  return bcrypt.hashPassword(password, 10);
+  return bcrypt.hash(password, 10);
 };
 // UserSchema.methods.getPerformanceData() = function() {
 //   return {
