@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const passport = require('passport');
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
+const { router: questionRouter } = require('./questions');
 
 const {PORT, CLIENT_ORIGIN} = require('./config');
 const {dbConnect} = require('./db-mongoose');
@@ -39,7 +40,7 @@ app.get('/api/dashboard', jwtAuth, (req, res) => {
   return res.json({data: 'rosebud'});
 });
 
-// app.use('/api/questions', )
+app.use('/api/questions', questionRouter);
 
 function runServer(port = PORT) {
   const server = app
