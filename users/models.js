@@ -18,11 +18,14 @@ const UserSchema = mongoose.Schema({
   performance: [{
     word: { type: mongoose.Schema.Types.ObjectId, ref: 'Question'},
     response: { type: String, required: true},
+    numberCorrect: { type: Number, required: true},
     timesAnswered: { type: Number, required: true}
   }] 
 });
 
 //performance is a node with the word, answer
+//compare times answered with the number of times
+//correct
 
 //may need another method to grab the user's performance from a previous
 //session for the algorithm

@@ -4,10 +4,10 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-const QuestionSchema = mongoose.schema({
+const QuestionSchema = mongoose.schema([{
   question: { type: String },
   answer: { type: String }
-});
+}]);
 
 const Question = mongoose.model('Question', QuestionSchema);
 
