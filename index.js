@@ -39,7 +39,7 @@ const jwtAuth = passport.authenticate('jwt', { session: false});
 app.get('/api/dashboard', jwtAuth, (req, res) => {
   return res.json({data: 'rosebud'});
 });
-
+//use auth middleware here or change it to dashboard?
 app.use('/api/questions', questionRouter);
 
 function runServer(port = PORT) {
