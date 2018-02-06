@@ -13,4 +13,7 @@ router.get('/', (req, res) => {
     });
 });
 
+//fetch answer after submission?or send with question object
+// router.get('/:id', (req, res))
+
 module.exports = { router };

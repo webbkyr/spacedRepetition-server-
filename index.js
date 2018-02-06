@@ -32,15 +32,18 @@ passport.use(jwtStrategy);
 
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
+// app.use('/api/dashboard', jwtAuth, questionsRouter)
+//move /dashboard and /questions
+
 
 const jwtAuth = passport.authenticate('jwt', { session: false});
 
-//protected endpoint
+//protected endpoint once logged in
 app.get('/api/dashboard', jwtAuth, (req, res) => {
-  return res.json({data: 'rosebud'});
+  return res.json({data: 'hooray!'});
 });
-//do we use auth middleware here or just on the dashboard?
-app.use('/api/questions', questionRouter);
+
+app.use('/api/questions', jwtAuth, questionRouter);
 
 function runServer(port = PORT) {
   const server = app
