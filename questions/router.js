@@ -7,7 +7,6 @@ const { Question } = require('./models');
 router.get('/', (req, res) => {
   return Question
     .findOne()
-    .select('question')
     .then(question => {
       res.json(question);
     });
