@@ -17,7 +17,8 @@ const UserSchema = mongoose.Schema({
   },
   performance: [{
     word: { type: mongoose.Schema.Types.ObjectId, ref: 'Question'},
-    response: { type: String, required: true},
+    answer: {type: mongoose.Schema.Types.ObjectId, ref: 'Question'},
+    response: { type: String },
     isCorrect: { type: Boolean, required: true}
   }] 
 });

@@ -3,6 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { User } = require('./models');
+const { Question } = require('../questions/models');
 const router = express.Router();
 const jsonParser = bodyParser.json();
 
@@ -96,12 +97,18 @@ router.post('/', jsonParser, (req, res) => {
 });
 
 router.post('/responses', jsonParser,(req, res) => {
-  const { response } = req.body;
-  response.toLowerCase();
-  res.json({message: 'Response info receieved'});
-  
-  // return User.create({performance: word, response });
-
+  const { id, response } = req.body;
+  console.log('id: ', id);
+  Question.findById(id, function(err, question){
+    if (err) return res.status(err.code).json(err);
+    console.log(question);
+    question.set({response: response.toLowerCase()});
+    question.save(function (err, updatedQuestion) {
+      if (err) return res.status(err.code).json(err);
+      res.json(updatedQuestion);
+    });
+  });
+  // res.json({message: 'Response info receieved'});
 });
 
 module.exports = {router};
