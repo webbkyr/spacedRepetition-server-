@@ -96,9 +96,10 @@ router.post('/', jsonParser, (req, res) => {
 });
 
 router.post('/responses', (req, res) => {
-  const { word, response } = req.body;
-  response.toLowerCase();
-  res.send('Response info receieved');
+  // const { word, response } = req.body;
+  // response.toLowerCase();
+  console.log(res.json({message: 'Response info receieved'}));
+  res.json({message: 'Response info receieved'});
   
   // return User.create({performance: word, response });
 
