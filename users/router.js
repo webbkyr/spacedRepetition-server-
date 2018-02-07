@@ -105,42 +105,19 @@ router.post('/', jsonParser, (req, res) => {
     });
 });
 
-//find the user, then find the performance in the user, 
-//then update that performance's response property
-//also need to send over all data from client
-
-//if statement, can you find that performance object?
-//true/false will be passed back via frontend
-//User ID will be passed back 
-//use populate when the user registers
-
 router.post('/responses', jsonParser,(req, res) => {
-  const { id, username, response } = req.body;
-  console.log('id: ', id, 'username, ', username, 'response: ', response);
+  const { uid, question, response } = req.body;
   res.json(response);
-  // User.findById(username, function(err, user){
-  //   if(err) return res.status(err.code).json(err);
-  //   else {
-  //     performance.set({response: 'response'});
-  //   }
-  // })
 
-  // User.findById(id, function(err, user){
-  //   if (err) return res.status(err.code).json(err);
-  //   else if (!user.performance.id){
-  //     user.performance.push({response: response.toLowerCase()});
-  //     user.save(function (err, updatedQuestion) {
-  //       if (err) return res.status(err.code).json(err);
-  //       res.json(updatedQuestion);
-  //     });
-  //   }
-  //   else {
-  //     //update the object
-  //   }
-  // });
-  // res.json({message: 'Response info receieved'});
+  User.findById(uid, function(err, user){
+    if(err) return res.status(err.code).json(err);
+    else {
+      user.set(
+        {'performance.0.response': response}
+      );
+      user.save();
+    }
+  });
 });
 
-
 module.exports = {router};
-
