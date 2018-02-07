@@ -19,7 +19,7 @@ const localStrategy = new LocalStrategy((username, password, done) => {
       return user.validatePassword(password);
     })
     .then(isValid => {
-      if (isValid) {
+      if (!isValid) {
         return Promise.reject({
           reason: 'LoginError',
           message: 'Incorrect username or password'

@@ -30,9 +30,17 @@ app.use(
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-app.use('/api', questionRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
+
+
+const jwtAuth = passport.authenticate('jwt', { session: false});
+
+app.get('/api/dashboard', jwtAuth, (req, res) => {		
+  return res.json({data: 'hooray!'});
+});
+
+app.use('/api/questions', jwtAuth, questionRouter);
 
 function runServer(port = PORT) {
   const server = app

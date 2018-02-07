@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const { User } = require('../users/models');
 const { Question } = require('./models');
 const { questionQueue, helpers } = require('./algorithm');
 
@@ -12,7 +13,11 @@ router.get('/dashboard', jwtAuth, (req, res) => {
   return res.json({data: 'hooray!'});
 });
 
-router.get('/questions', jwtAuth, (req, res) => {
+router.get('/', jwtAuth, (req, res) => {
+  // User.findOne()
+  //   .then(users => {
+  //     res.json(users.performance);
+  //   });
   Question.find()
     .then(questions => {
       questions.forEach(question => questionQueue.enqueue(question));
