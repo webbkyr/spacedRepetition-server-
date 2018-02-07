@@ -80,15 +80,13 @@ router.post('/', jsonParser, (req, res) => {
       return User.hashPassword(password);
     })
     .then(hash => {
-      console.log('hash: ', hash);
-      return new User({ //User.create({
+      return new User({
         username,
         password: hash
       });
     })
     .then(user => Question.find().then(questions => ({user, questions})))
     .then(({user, questions}) => {
-      console.log(user, questions);
       user.performance = questions.map((question, index) => ({
         word: question.question,
         answer: question.answer
@@ -117,9 +115,16 @@ router.post('/', jsonParser, (req, res) => {
 //use populate when the user registers
 
 router.post('/responses', jsonParser,(req, res) => {
-  const { id, response } = req.body;
-  console.log('id: ', id, 'response: ', response);
+  const { id, username, response } = req.body;
+  console.log('id: ', id, 'username, ', username, 'response: ', response);
   res.json(response);
+  // User.findById(username, function(err, user){
+  //   if(err) return res.status(err.code).json(err);
+  //   else {
+  //     performance.set({response: 'response'});
+  //   }
+  // })
+
   // User.findById(id, function(err, user){
   //   if (err) return res.status(err.code).json(err);
   //   else if (!user.performance.id){
