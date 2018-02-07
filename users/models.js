@@ -32,9 +32,6 @@ const UserSchema = mongoose.Schema({
 
 //performance is an array with node objects containing info about the word/response/correct  
 
-//may need a method to grab the user's performance from a previous
-//session for the algorithm
-
 UserSchema.methods.apiRepr = function(){
   return {
     id: this._id,
@@ -49,12 +46,7 @@ UserSchema.methods.validatePassword = function(password) {
 UserSchema.statics.hashPassword = function(password) {
   return bcrypt.hash(password, 10);
 };
-// UserSchema.methods.getPerformanceData() = function() {
-//   return {
-//     id: this._id,
-//     performance: this.performance
-//   }
-// }
+
 
 const User = mongoose.model('User', UserSchema);
 

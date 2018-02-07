@@ -6,6 +6,7 @@ const { User } = require('./models');
 const { Question } = require('../questions/models');
 const router = express.Router();
 const jsonParser = bodyParser.json();
+const { helpers, questionQueue, setQuestions } = require('../questions');
 
 //Register new users
 
@@ -135,4 +136,6 @@ router.post('/responses', jsonParser,(req, res) => {
   // res.json({message: 'Response info receieved'});
 });
 
+
 module.exports = {router};
+
