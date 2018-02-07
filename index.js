@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const passport = require('passport');
+
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 const { router: questionRouter } = require('./questions');
@@ -12,7 +13,6 @@ const { router: questionRouter } = require('./questions');
 const {PORT, CLIENT_ORIGIN} = require('./config');
 const {dbConnect} = require('./db-mongoose');
 // const {dbConnect} = require('./db-knex');
-
 const app = express();
 
 app.use(
@@ -30,20 +30,9 @@ app.use(
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
+app.use('/api', questionRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
-// app.use('/api/dashboard', jwtAuth, questionsRouter)
-//move /dashboard and /questions
-
-
-const jwtAuth = passport.authenticate('jwt', { session: false});
-
-//protected endpoint once logged in
-app.get('/api/dashboard', jwtAuth, (req, res) => {
-  return res.json({data: 'hooray!'});
-});
-
-app.use('/api/questions', jwtAuth, questionRouter);
 
 function runServer(port = PORT) {
   const server = app

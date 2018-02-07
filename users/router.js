@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const { User } = require('./models');
 const router = express.Router();
 const jsonParser = bodyParser.json();
+const { helpers, questionQueue, setQuestions } = require('../questions');
 
 //Register new users
 
@@ -99,9 +100,10 @@ router.post('/responses', (req, res) => {
   const { word, response } = req.body;
   response.toLowerCase();
   res.send('Response info receieved');
-  
-  // return User.create({performance: word, response });
+  //User.save the response 
+  // return User.set({performance: word, response });
 
 });
+
 
 module.exports = {router};
