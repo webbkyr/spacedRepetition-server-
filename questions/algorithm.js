@@ -3,17 +3,16 @@
 class _Node {
   constructor(data) {
     this.data = data,
-    this.next = null;
+    this.next = null,
     this.prev = null;
   }
 }
 
 class Queue {
   constructor() {
-    this.first = null;
+    this.first = null,
     this.last = null;
   }
-
   enqueue(data) {
     const question = new _Node(data);
     if (this.first === null) {
@@ -43,7 +42,7 @@ class Queue {
 
 const helpers = {
   peek: queue => {
-    return queue.first;
+    return queue.first.data;
   },
   count: queue => {
     let count = 0;
@@ -63,18 +62,18 @@ const setQuestions = (question, isCorrect) => {
 };
 
 const populateQueue = (Model, queue) => {
-  Model.find()
+  return Model.find()
     .then(data => {
       return data.forEach(question => {
-        queue.enqueue(question);
+        console.log('Queue in populate fn', queue);
+        return queue.enqueue(question);
       });
     });
-  return queue;
 };
 
 let questionQueue = new Queue();
 
-module.exports = { helpers, setQuestions, populateQueue, questionQueue };
+module.exports = { Queue, helpers, setQuestions, populateQueue, questionQueue };
 
 //Get the user's record; 
 //if the performance array is empty, populate the queue

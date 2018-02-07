@@ -4,7 +4,9 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const { Question } = require('./models');
-const { questionQueue, populateQueue, helpers } = require('./algorithm');
+const { Queue, questionQueue, populateQueue, helpers } = require('./algorithm');
+
+let q = new Queue();
 
 const jwtAuth = passport.authenticate('jwt', { session: false});
 
@@ -13,12 +15,10 @@ router.get('/dashboard', jwtAuth, (req, res) => {
 });
 
 router.get('/questions', jwtAuth, (req, res) => {
-  return Question
-    .findOne()
-    .then(question => {
-      populateQueue(Question, questionQueue);
-      console.log(questionQueue);
-      res.json(question);
+  Question.find()
+    .then(questions => {
+      questions.forEach(question => questionQueue.enqueue(question));
+      res.json(helpers.peek(questionQueue));
     });
 });
 
