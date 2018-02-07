@@ -79,10 +79,20 @@ router.post('/', jsonParser, (req, res) => {
       return User.hashPassword(password);
     })
     .then(hash => {
-      return User.create({
+      console.log('hash: ', hash);
+      return new User({ //User.create({
         username,
         password: hash
       });
+    })
+    .then(user => Question.find().then(questions => ({user, questions})))
+    .then(({user, questions}) => {
+      console.log(user, questions);
+      user.performance = questions.map((question, index) => ({
+        word: question.question,
+        answer: question.answer
+      }));
+      return user.save();
     })
     .then(user => {
       //send back a safe representation of the user (no passwords)
@@ -101,23 +111,27 @@ router.post('/', jsonParser, (req, res) => {
 //also need to send over all data from client
 
 //if statement, can you find that performance object?
+//true/false will be passed back via frontend
+//User ID will be passed back 
+//use populate when the user registers
 
 router.post('/responses', jsonParser,(req, res) => {
   const { id, response } = req.body;
   console.log('id: ', id, 'response: ', response);
-  User.findById(id, function(err, user){
-    if (err) return res.status(err.code).json(err);
-    else if (!user.performance.id){
-      user.performance.push({response: response.toLowerCase()});
-      user.save(function (err, updatedQuestion) {
-        if (err) return res.status(err.code).json(err);
-        res.json(updatedQuestion);
-      });
-    }
-    else {
-      //update the object
-    }
-  });
+  res.json(response);
+  // User.findById(id, function(err, user){
+  //   if (err) return res.status(err.code).json(err);
+  //   else if (!user.performance.id){
+  //     user.performance.push({response: response.toLowerCase()});
+  //     user.save(function (err, updatedQuestion) {
+  //       if (err) return res.status(err.code).json(err);
+  //       res.json(updatedQuestion);
+  //     });
+  //   }
+  //   else {
+  //     //update the object
+  //   }
+  // });
   // res.json({message: 'Response info receieved'});
 });
 

@@ -16,10 +16,17 @@ const UserSchema = mongoose.Schema({
     required: true
   },
   performance: [{
-    word: { type: mongoose.Schema.Types.ObjectId, ref: 'Question'},
-    answer: {type: mongoose.Schema.Types.ObjectId, ref: 'Question'},
-    response: { type: String },
-    isCorrect: { type: Boolean }
+    word: {
+      type: String,
+      required: true
+    },
+    answer: {
+      type: String,
+      required: true
+    },
+    response: { 
+      type: String
+    }
   }] 
 });
 
