@@ -44,11 +44,11 @@ const helpers = {
   peek: queue => {
     return queue.first.data;
   },
-  count: queue => {
+  getCount: queue => {
     let count = 0;
     let temp = queue.first;
-    while(queue.last.next !== null) {
-      queue.last.next = temp;
+    while(queue.first.prev !== null) {
+      queue.first.prev = temp;
       count++;
     }
     return count;
@@ -61,20 +61,9 @@ const setQuestions = (question) => {
   questionQueue.enqueue(question);
 };
 
-//the singular function for this currently isn't working
-// const populateQueue = (Model, queue) => {
-//   return Model.find()
-//     .then(data => {
-//       return data.forEach(question => {
-//         console.log('Queue in populate fn', queue);
-//         return queue.enqueue(question);
-//       });
-//     });
-// };
-
 let questionQueue = new Queue();
 
-module.exports = { Queue, helpers, setQuestions, questionQueue };
+module.exports = { helpers, setQuestions, questionQueue };
 
 //Get the user's record; 
 //if the performance array is empty, populate the queue

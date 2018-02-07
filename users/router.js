@@ -119,7 +119,9 @@ router.post('/', jsonParser, (req, res) => {
 router.post('/responses', jsonParser,(req, res) => {
   const { id, response } = req.body;
   console.log('id: ', id, 'response: ', response);
+
   res.json(response);
+
   // User.findById(id, function(err, user){
   //   if (err) return res.status(err.code).json(err);
   //   else if (!user.performance.id){

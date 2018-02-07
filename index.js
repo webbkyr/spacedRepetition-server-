@@ -36,11 +36,11 @@ app.use('/api/auth', authRouter);
 
 const jwtAuth = passport.authenticate('jwt', { session: false});
 
-app.get('/api/dashboard', jwtAuth, (req, res) => {		
-  return res.json({data: 'hooray!'});
-});
+// app.get('/api/dashboard', jwtAuth, (req, res) => {		
+//   return res.json({data: 'hooray!'});
+// });
 
-app.use('/api/questions', jwtAuth, questionRouter);
+app.use('/api', jwtAuth, questionRouter);
 
 function runServer(port = PORT) {
   const server = app

@@ -12,23 +12,26 @@ router.get('/dashboard', jwtAuth, (req, res) => {
   return res.json({data: 'hooray!'});
 });
 
-router.get('/', jwtAuth, (req, res) => {
+router.get('/questions', jwtAuth, (req, res) => {
   const user = req.user;
   User.findById(user.id)
     .then(user => {
       user.performance.forEach(question => questionQueue.enqueue(question));
-      res.json(helpers.peek(questionQueue));
+      // console.log(questionQueue)
+      return res.json(helpers.peek(questionQueue));
     })
     .catch(err => {
       res.status(500).json({code: 500, message: 'Something went wrong'});
     });
+  // console.log('INSIDE QUESTIONS',questionQueue);
+  //not null inside questions when you hit questions endpoint
 });
 
 router.get('/next', jwtAuth, (req, res) => {
-//respond with the next question based on a peek at the queue
-//get the User's record 
-  return res.json(helpers.peek(questionQueue));
-
+  // console.log('INSIDE NEXT', questionQueue);
+  //not null when you hit the next endpoint
+  // questionQueue.dequeue();
+  res.json(helpers.peek(questionQueue));
 });
 
 module.exports = { router };
