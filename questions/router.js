@@ -17,20 +17,16 @@ router.get('/questions', jwtAuth, (req, res) => {
   User.findById(user.id)
     .then(user => {
       user.performance.forEach(question => questionQueue.enqueue(question));
-      // console.log(questionQueue)
+      console.log(helpers.peek(questionQueue))
       return res.json(helpers.peek(questionQueue));
     })
     .catch(err => {
       res.status(500).json({code: 500, message: 'Something went wrong'});
     });
-  // console.log('INSIDE QUESTIONS',questionQueue);
-  //not null inside questions when you hit questions endpoint
 });
 
 router.get('/next', jwtAuth, (req, res) => {
-  // console.log('INSIDE NEXT', questionQueue);
-  //not null when you hit the next endpoint
-  // questionQueue.dequeue();
+  console.log('Next question', questionQueue.first.data);
   res.json(helpers.peek(questionQueue));
 });
 

@@ -55,8 +55,7 @@ const helpers = {
   }
 };
 
-const setQuestions = (question) => {
-  //run this function in the responses endpoint when the response is posted to the User's record (inside the promise)
+const setQuestions = question => {
   questionQueue.dequeue();
   questionQueue.enqueue(question);
 };
@@ -65,5 +64,4 @@ let questionQueue = new Queue();
 
 module.exports = { helpers, setQuestions, questionQueue };
 
-//Get the user's record; 
-//if the performance array is empty, populate the queue
+

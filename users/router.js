@@ -107,9 +107,11 @@ router.post('/', jsonParser, (req, res) => {
 
 router.post('/responses', jsonParser,(req, res) => {
   const { uid, question, response } = req.body;
+  console.log(req.body)
   res.json(response);
 
   User.findById(uid, function(err, user){
+    console.log('user',user);
     if(err) return res.status(err.code).json(err);
     else {
       user.set(
@@ -117,7 +119,10 @@ router.post('/responses', jsonParser,(req, res) => {
       );
       user.save();
     }
+    let answered = questionQueue.first.data;
+    setQuestions(answered);
   });
+  
 });
 
 module.exports = {router};
