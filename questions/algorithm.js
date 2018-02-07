@@ -55,25 +55,26 @@ const helpers = {
   }
 };
 
-const setQuestions = (question, isCorrect) => {
+const setQuestions = (question) => {
   //run this function in the responses endpoint when the response is posted to the User's record (inside the promise)
   questionQueue.dequeue();
   questionQueue.enqueue(question);
 };
 
-const populateQueue = (Model, queue) => {
-  return Model.find()
-    .then(data => {
-      return data.forEach(question => {
-        console.log('Queue in populate fn', queue);
-        return queue.enqueue(question);
-      });
-    });
-};
+//the singular function for this currently isn't working
+// const populateQueue = (Model, queue) => {
+//   return Model.find()
+//     .then(data => {
+//       return data.forEach(question => {
+//         console.log('Queue in populate fn', queue);
+//         return queue.enqueue(question);
+//       });
+//     });
+// };
 
 let questionQueue = new Queue();
 
-module.exports = { Queue, helpers, setQuestions, populateQueue, questionQueue };
+module.exports = { Queue, helpers, setQuestions, questionQueue };
 
 //Get the user's record; 
 //if the performance array is empty, populate the queue

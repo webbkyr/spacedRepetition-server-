@@ -102,8 +102,9 @@ router.post('/responses', (req, res) => {
   res.send('Response info receieved');
   //User.save the response 
   // return User.set({performance: word, response });
-
+//use populate to find the question and answer
 });
 
 
 module.exports = {router};
+

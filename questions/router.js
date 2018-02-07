@@ -4,9 +4,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const { Question } = require('./models');
-const { Queue, questionQueue, populateQueue, helpers } = require('./algorithm');
-
-let q = new Queue();
+const { questionQueue, helpers } = require('./algorithm');
 
 const jwtAuth = passport.authenticate('jwt', { session: false});
 
@@ -24,6 +22,7 @@ router.get('/questions', jwtAuth, (req, res) => {
 
 router.get('/next', jwtAuth, (req, res) => {
 //respond with the next question based on a peek at the queue
+//get the User's record 
   return res.json(helpers.peek(questionQueue));
 
 });
