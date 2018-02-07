@@ -18,6 +18,9 @@ router.get('/', jwtAuth, (req, res) => {
     .then(user => {
       user.performance.forEach(question => questionQueue.enqueue(question));
       res.json(helpers.peek(questionQueue));
+    })
+    .catch(err => {
+      res.status(500).json({code: 500, message: 'Something went wrong'});
     });
 });
 
