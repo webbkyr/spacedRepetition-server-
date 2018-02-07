@@ -19,7 +19,7 @@ const UserSchema = mongoose.Schema({
     word: { type: mongoose.Schema.Types.ObjectId, ref: 'Question'},
     answer: {type: mongoose.Schema.Types.ObjectId, ref: 'Question'},
     response: { type: String },
-    isCorrect: { type: Boolean, required: true}
+    isCorrect: { type: Boolean }
   }] 
 });
 

@@ -96,17 +96,27 @@ router.post('/', jsonParser, (req, res) => {
     });
 });
 
+//find the user, then find the performance in the user, 
+//then update that performance's response property
+//also need to send over all data from client
+
+//if statement, can you find that performance object?
+
 router.post('/responses', jsonParser,(req, res) => {
   const { id, response } = req.body;
-  console.log('id: ', id);
-  Question.findById(id, function(err, question){
+  console.log('id: ', id, 'response: ', response);
+  User.findById(id, function(err, user){
     if (err) return res.status(err.code).json(err);
-    console.log(question);
-    question.set({response: response.toLowerCase()});
-    question.save(function (err, updatedQuestion) {
-      if (err) return res.status(err.code).json(err);
-      res.json(updatedQuestion);
-    });
+    else if (!user.performance.id){
+      user.performance.push({response: response.toLowerCase()});
+      user.save(function (err, updatedQuestion) {
+        if (err) return res.status(err.code).json(err);
+        res.json(updatedQuestion);
+      });
+    }
+    else {
+      //update the object
+    }
   });
   // res.json({message: 'Response info receieved'});
 });
