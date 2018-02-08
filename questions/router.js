@@ -30,7 +30,7 @@ router.get('/next', jwtAuth, (req, res) => {
     });
 });
 
-router.post('/responses', jwtAuth, jsonParser,(req, res) => {
+router.post('/responses', jwtAuth, jsonParser, (req, res) => {
   const { response } = req.body;
   User.findById(req.user.id)
     .then(user => {
@@ -39,6 +39,12 @@ router.post('/responses', jwtAuth, jsonParser,(req, res) => {
 
       const answeredQuestionIndex = user.head;
       const answeredQuestion = user.performance[answeredQuestionIndex];
+
+      if (answeredQuestion.answer === response) {
+        answeredQuestion.correctCount++;
+        // user.performance.correctCount++;
+      }
+      console.log(answeredQuestion.correctCount)
 
       if (user.head >= user.tail) {
         user.head = 0;
