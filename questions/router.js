@@ -34,16 +34,19 @@ router.post('/responses', jwtAuth, jsonParser, (req, res) => {
   const { response } = req.body;
   User.findById(req.user.id)
     .then(user => {
+      //if correct, move it to the back of the list
+      //if incorrect move it back one
       user.performance.response = response;
       user.tail = (user.performance.length -1);
 
+      //the index
       const answeredQuestionIndex = user.head;
+      //the node
       const answeredQuestion = user.performance[answeredQuestionIndex];
 
-      if (answeredQuestion.answer === response) {
-        answeredQuestion.correctCount++;
-      }
-
+      // if (answeredQuestion.answer === response) {
+      //   answeredQuestion.correctCount++;
+      // }
       if (user.head >= user.tail) {
         user.head = 0;
       }
@@ -51,7 +54,20 @@ router.post('/responses', jwtAuth, jsonParser, (req, res) => {
         user.head = user.head+1;
       }
 
-      answeredQuestion.next = user.tail;
+      if (answeredQuestion.answer === response) {
+        answeredQuestion.correctCount++;
+        //if correct, move the question to the tail's index
+        answeredQuestion.next = user.tail;
+      }
+      else {
+        //get a handle on the next question
+        answeredQuestion.next = user.head;
+        //go up to spots from answered question to set that node's prev to answered question
+        user.performance[answeredQuestion.next].prev = answeredQuestion.next;
+      }
+    
+
+      // answeredQuestion.next = user.tail;
 
       return user.save();
     })

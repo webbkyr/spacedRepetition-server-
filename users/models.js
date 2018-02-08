@@ -30,7 +30,7 @@ const UserSchema = mongoose.Schema({
     },
     correctCount: { type: Number, default: 0 },
     next: { type: Number, default: null},
-    prev: Number
+    prev: { type: Number, default: null}
   }],
   head: { type: Number, default: 0},
   tail: Number
