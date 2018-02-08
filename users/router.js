@@ -107,21 +107,49 @@ router.post('/', jsonParser, (req, res) => {
 
 router.post('/responses', jsonParser,(req, res) => {
   const { uid, question, response } = req.body;
-  console.log(req.body)
-  res.json(response);
+  // res.json(response);
+  console.log(req.user)
+  User.findById(uid)
+    .then(user => {
+      // console.log(user)
+      console.log('IN POST ENDPOINT', user.head)
+      user.performance.response = response;
+      user.tail = (user.performance.length -1);
+      console.log('IN POST ENDPOINT', user.tail)
 
-  User.findById(uid, function(err, user){
-    console.log('user',user);
-    if(err) return res.status(err.code).json(err);
-    else {
-      user.set(
-        {'performance.0.response': response}
-      );
-      user.save();
-    }
-    let answered = questionQueue.first.data;
-    setQuestions(answered);
-  });
+      const answeredQuestionIndex = user.head;
+      const answeredQuestion = user.performance[answeredQuestionIndex];
+      console.log('ANSWERED Q', answeredQuestion)
+      // if (response === user.performance[0].answer) {
+      //it's correct
+      // answeredQuestion.next = answeredQuestionIndex+1;
+      user.head = answeredQuestion.next;
+      // let tempNode = answeredQuestion;
+      answeredQuestion.next = user.performance[user.tail].next;
+      // user.tail = answeredQuestion;
+      // user.performance[user.tail].next = answeredQuestionIndex;
+      // }
+      // else {
+        
+      // }
+
+      return user.save();
+    })
+    .then(user => {
+      console.log('THE NEW HEAD IN POST ENDPOINT',user.performance[user.head])
+      return res.status(200).json();
+    });
+
+  // if(err) return res.status(err.code).json(err);
+  // else {
+  //   user.set(
+  //     {'performance.0.response': response}
+  //   );
+  //   user.save();
+  // }
+  // let answered = questionQueue.first.data;
+  // setQuestions(answered);
+  // });
   
 });
 

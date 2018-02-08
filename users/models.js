@@ -27,8 +27,13 @@ const UserSchema = mongoose.Schema({
     response: { 
       type: String,
       default: null
-    }
-  }] 
+    },
+    next: { type: Number, default: null},
+    prev: Number
+  }],
+  head: { type: Number, default: 0},
+  tail: Number
+  
 });
 
 //performance is an array with node objects containing info about the word/response/correct  
