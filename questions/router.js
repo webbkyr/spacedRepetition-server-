@@ -42,9 +42,7 @@ router.post('/responses', jwtAuth, jsonParser, (req, res) => {
 
       if (answeredQuestion.answer === response) {
         answeredQuestion.correctCount++;
-        // user.performance.correctCount++;
       }
-      console.log(answeredQuestion.correctCount)
 
       if (user.head >= user.tail) {
         user.head = 0;
