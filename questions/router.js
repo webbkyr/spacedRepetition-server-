@@ -44,29 +44,40 @@ router.post('/responses', jwtAuth, jsonParser, (req, res) => {
       const answeredQuestion = user.performance[answeredQuestionIndex];
 
       answeredQuestion.attempts++;
+      // answeredQuestion.prev = (answeredQuestionIndex > 0 ? answeredQuestionIndex-1 : user.tail);
+      answeredQuestion.next++;
 
       if (answeredQuestion.answer === response) {
         answeredQuestion.correctCount++;
+        //change correct answer pointer to 9
         answeredQuestion.next = user.tail;
       }
       else {
         let wrongAnswerIndex = answeredQuestionIndex;
-        let insertLocation = answeredQuestion.next+1;
-        for (let i=0; i <= insertLocation; i++) {
-          answeredQuestion.next = wrongAnswerIndex;
-          // answeredQuestion.next = wrongAnswerIndex;
-          // wrongAnswerIndex = user.head+1;
-          // user.performance[insertLocation].prev = wrongAnswerIndex;
-        
-
+        let insertLocation = 2;
+        for (let i=0; i < insertLocation; i++) {
+          user.performance[insertLocation].prev = wrongAnswerIndex;
         }
+
+        //         Given a list of questions:
+        // Take the first question in the list
+        // Ask the question
+        // If the answer was correct:
+        // Put the question at the back of the list
+        // If the answer was wrong:
+        // Move the question back one in the list
+        // You can use a doubly linked list to do this
+
+        
       }
       if (user.head >= user.tail) {
         user.head = 0;
       }
       else {
+        // answeredQuestion.next = user.head+1;
         user.head = user.head+1;
       }
+      console.log('HEAD',user.head, 'TAIL', user.tail)
       
 
       return user.save();
