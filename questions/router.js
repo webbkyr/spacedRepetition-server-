@@ -44,21 +44,30 @@ router.post('/responses', jwtAuth, jsonParser, (req, res) => {
       const answeredQuestion = user.performance[answeredQuestionIndex];
 
       answeredQuestion.attempts++;
-      console.log(answeredQuestion.attempts);
-
 
       if (answeredQuestion.answer === response) {
         answeredQuestion.correctCount++;
+        answeredQuestion.next = user.tail;
       }
+      else {
+        let wrongAnswerIndex = answeredQuestionIndex;
+        let insertLocation = answeredQuestion.next+1;
+        for (let i=0; i <= insertLocation; i++) {
+          answeredQuestion.next = wrongAnswerIndex;
+          // answeredQuestion.next = wrongAnswerIndex;
+          // wrongAnswerIndex = user.head+1;
+          // user.performance[insertLocation].prev = wrongAnswerIndex;
+        
 
+        }
+      }
       if (user.head >= user.tail) {
         user.head = 0;
       }
       else {
         user.head = user.head+1;
       }
-
-      answeredQuestion.next = user.tail;
+      
 
       return user.save();
     })
