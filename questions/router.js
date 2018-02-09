@@ -11,7 +11,10 @@ const { questionQueue, helpers } = require('./algorithm');
 const jwtAuth = passport.authenticate('jwt', { session: false});
 
 router.get('/dashboard', jwtAuth, (req, res) => {
-  return res.json({data: 'hooray!'});
+  User.findById(req.user.id) 
+    .then(user => {
+      res.json(user.performance);
+    });
 });
 
 router.get('/questions', jwtAuth, (req, res) => {
@@ -39,6 +42,10 @@ router.post('/responses', jwtAuth, jsonParser, (req, res) => {
 
       const answeredQuestionIndex = user.head;
       const answeredQuestion = user.performance[answeredQuestionIndex];
+
+      answeredQuestion.attempts++;
+      console.log(answeredQuestion.attempts);
+
 
       if (answeredQuestion.answer === response) {
         answeredQuestion.correctCount++;

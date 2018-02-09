@@ -29,6 +29,7 @@ const UserSchema = mongoose.Schema({
       default: null
     },
     correctCount: { type: Number, default: 0 },
+    attempts: { type: Number, default: 0},
     next: { type: Number, default: null},
     prev: Number
   }],
