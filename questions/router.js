@@ -40,58 +40,60 @@ router.post('/responses', jwtAuth, jsonParser, (req, res) => {
       const answeredQuestionIndex = user.head;
       const answeredQuestion = user.performance[answeredQuestionIndex];
 
-      let assignNextPointer = 1;
+      let assignNextPointer = 0;
       let assignPrevPointer = 0;
-
-      for (let i=0; i <= user.tail; i++) {
-        if (user.performance[i] === user.tail) {
-          user.performance[i].next = user.head;
-        }
-        else {
-          user.performance[i].next = assignNextPointer++;
-        }
-        if (user.performance[i] === user.head) {
-          user.performamce[i].prev = user.tail;
-        }
-        else {
-          user.performance[i].prev = assignPrevPointer++;
-        }
-      }
-
-      console.log(user.performance);
-
-      user.head = answeredQuestion.next;
-
-      // if (user.head >= user.tail) {
-      //   user.head = 0;
-      // }
-      // else {
-      //   user.head = answeredQuestion.next;
-      // }
 
       if (answeredQuestion.answer === response) {
         answeredQuestion.correctCount++; 
-      }
-      else {
-        // 0 1 0 2 3
-        let rightSpotIndex = user.performance[user.head].next;
-        user.performance[rightSpotIndex].prev = answeredQuestionIndex;
-        rightSpotIndex.next = answeredQuestionIndex;
-        
-        // user.head = answeredQuestionIndex-1;
+        user.tail = answeredQuestion;
+
       }
 
-      console.log(user.performance[user.head]);
+      for (let i=0; i <= user.tail; i++) {
+        console.log('BEGINNING','i >>', i, 'i.next >>>>', user.performance[i].next, 'i.prev >>>,', user.performance[i].prev)
+        if (i === 0) {
+          user.performance[i].prev = user.tail;
+        }
+        else {
+          if (i === user.tail) {
+            user.performance[i].next = 0;
+            user.performance[i].prev = assignPrevPointer-1;
+  
+            console.log('Next pointer', assignNextPointer)
+            console.log('Prev pointer', assignPrevPointer)
+          }
+          else {
     
+            user.performance[i].next = assignNextPointer++;
+            user.performance[i].prev = assignPrevPointer++;
+          }
+        }
+      }
 
-      // answeredQuestion.next = user.tail;
+      // console.log(user.performance);
+      console.log('answered q', answeredQuestion)
+      console.log('head', user.head)
+
+      // user.head = answeredQuestion.next;
+
+      // if (answeredQuestion.answer === response) {
+      //   answeredQuestion.correctCount++; 
+      // }
+      // else {
+      //   // 0 1 0 2 3
+      //   let insertIndex = 
+        
+      // }
+
+      console.log(user.performance);
+
 
       return user.save();
     })
     .then(user => {
       console.log('THE NEW HEAD IN POST ENDPOINT',user.performance[user.head]);
       return res.status(200).json();
-    });
+    }).catch(err => console.log(err));
 });
 
 module.exports = { router };
