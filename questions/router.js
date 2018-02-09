@@ -34,37 +34,54 @@ router.post('/responses', jwtAuth, jsonParser, (req, res) => {
   const { response } = req.body;
   User.findById(req.user.id)
     .then(user => {
-      //if correct, move it to the back of the list
-      //if incorrect move it back one
       user.performance.response = response;
       user.tail = (user.performance.length -1);
 
-      //the index
       const answeredQuestionIndex = user.head;
-      //the node
       const answeredQuestion = user.performance[answeredQuestionIndex];
 
-      // if (answeredQuestion.answer === response) {
-      //   answeredQuestion.correctCount++;
-      // }
-      if (user.head >= user.tail) {
-        user.head = 0;
-      }
-      else {
-        user.head = user.head+1;
+      let assignNextPointer = 1;
+      let assignPrevPointer = 0;
+
+      for (let i=0; i <= user.tail; i++) {
+        if (user.performance[i] === user.tail) {
+          user.performance[i].next = user.head;
+        }
+        else {
+          user.performance[i].next = assignNextPointer++;
+        }
+        if (user.performance[i] === user.head) {
+          user.performamce[i].prev = user.tail;
+        }
+        else {
+          user.performance[i].prev = assignPrevPointer++;
+        }
       }
 
+      console.log(user.performance);
+
+      user.head = answeredQuestion.next;
+
+      // if (user.head >= user.tail) {
+      //   user.head = 0;
+      // }
+      // else {
+      //   user.head = answeredQuestion.next;
+      // }
+
       if (answeredQuestion.answer === response) {
-        answeredQuestion.correctCount++;
-        //if correct, move the question to the tail's index
-        answeredQuestion.next = user.tail;
+        answeredQuestion.correctCount++; 
       }
       else {
-        //get a handle on the next question
-        answeredQuestion.next = user.head;
-        //go up to spots from answered question to set that node's prev to answered question
-        user.performance[answeredQuestion.next].prev = answeredQuestion.next;
+        // 0 1 0 2 3
+        let rightSpotIndex = user.performance[user.head].next;
+        user.performance[rightSpotIndex].prev = answeredQuestionIndex;
+        rightSpotIndex.next = answeredQuestionIndex;
+        
+        // user.head = answeredQuestionIndex-1;
       }
+
+      console.log(user.performance[user.head]);
     
 
       // answeredQuestion.next = user.tail;
